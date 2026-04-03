@@ -1,25 +1,16 @@
 <template>
 	<main class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50 px-4 py-4 text-slate-800 sm:px-6 lg:px-8">
 		<div class="mx-auto flex max-w-7xl flex-col gap-4">
-			<header class="flex flex-col gap-3 rounded-3xl border border-slate-200/80 bg-white/80 p-4 shadow-lg shadow-slate-200/60 backdrop-blur md:flex-row md:items-center md:justify-between">
-				<div class="flex items-center gap-3">
-					<div class="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 text-base font-extrabold text-white shadow-lg shadow-blue-500/25">
-						S
-					</div>
-					<div>
-						<p class="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Stratix</p>
-						<h1 class="mt-1 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">Team Workspace</h1>
-					</div>
-				</div>
+			<div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between rounded-3xl border border-slate-200/80 bg-white/80 p-4 shadow-lg shadow-slate-200/60 backdrop-blur">
+				<Header :email="user?.email" />
 				<button
-					class="inline-flex items-center justify-center rounded-2xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-0.5 hover:bg-blue-700 active:translate-y-0"
+					class="inline-flex items-center justify-center rounded-2xl bg-blue-600 px-4 py-2.5 text-[12px] font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-0.5 hover:bg-blue-700 active:translate-y-0"
 					type="button"
 					@click="toggle('createticketmodal')"
 				>
 					+ Nouveau ticket
 				</button>
-			</header>
-
+			</div>
 			<section
 				id="createticketmodal"
 				class="hidden overflow-hidden rounded-3xl border border-slate-200/80 bg-white/90 shadow-2xl shadow-slate-200/70 backdrop-blur"
@@ -132,15 +123,15 @@
 			<section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
 				<article class="rounded-2xl border border-slate-200 bg-white/90 p-4 shadow-lg shadow-slate-200/60">
 					<p class="text-sm text-slate-500">Tickets ouverts</p>
-					<strong class="mt-2 block text-3xl font-bold text-slate-900">{{ count({ status: 'todo' } as Task) }}</strong>
+					<strong class="mt-2 block text-3xl font-bold text-slate-900">{{ count('todo') }}</strong>
 				</article>
 				<article class="rounded-2xl border border-slate-200 bg-white/90 p-4 shadow-lg shadow-slate-200/60">
 					<p class="text-sm text-slate-500">En cours</p>
-					<strong class="mt-2 block text-3xl font-bold text-slate-900">{{ count({ status: 'progress' } as Task) }}</strong>
+					<strong class="mt-2 block text-3xl font-bold text-slate-900">{{ count('progress') }}</strong>
 				</article>
 				<article class="rounded-2xl border border-slate-200 bg-white/90 p-4 shadow-lg shadow-slate-200/60">
 					<p class="text-sm text-slate-500">En revue</p>
-					<strong class="mt-2 block text-3xl font-bold text-slate-900">{{ count({ status: 'review' } as Task) }}</strong>
+					<strong class="mt-2 block text-3xl font-bold text-slate-900">{{ count('review') }}</strong>
 				</article>
 			</section>
 
@@ -182,6 +173,8 @@
 	</main>
 </template>
 <script lang="ts">
+import Header from '@/components/Header.vue';
+import { defineComponent } from 'vue';
 interface Task {
 	title: string;
 	description: string;
@@ -191,13 +184,22 @@ interface Task {
 	dueDate: string;
 	notifyTeam: boolean;
 }
-
-export default {
-	name: 'HomeView',
-
+let user = null;
+try {
+	const userData = localStorage.getItem('user');
+	user = userData ? JSON.parse(userData) : null;
+} catch (e) {
+	console.error('Error parsing user from localStorage', e);
+}
+export default defineComponent({
+    name: 'HomeView',
+    components: {
+        Header,
+    },
 	data() {
 		return {
 			tasks: [] as Task[],
+			user,
 			form: {
 				title: '',
 				description: '',
@@ -235,9 +237,9 @@ export default {
 			formEl.reset();
 			this.toggle('createticketmodal');
 		},
-		count(task: Task) {
-			return this.tasks.filter((item) => item.status === task.status).length;
+		count(status: string) {
+			return this.tasks.filter((item) => item.status === status).length;
 		}
 	}
-};
+});
 </script>
