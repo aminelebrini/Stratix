@@ -1,227 +1,243 @@
 <template>
-	<main class="home-page">
-		<header class="topbar">
-			<div class="brand">
-				<div class="brand-mark">S</div>
-				<div>
-					<p class="kicker">Stratix</p>
-					<h1>Team Workspace</h1>
+	<main class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50 px-4 py-4 text-slate-800 sm:px-6 lg:px-8">
+		<div class="mx-auto flex max-w-7xl flex-col gap-4">
+			<header class="flex flex-col gap-3 rounded-3xl border border-slate-200/80 bg-white/80 p-4 shadow-lg shadow-slate-200/60 backdrop-blur md:flex-row md:items-center md:justify-between">
+				<div class="flex items-center gap-3">
+					<div class="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 text-base font-extrabold text-white shadow-lg shadow-blue-500/25">
+						S
+					</div>
+					<div>
+						<p class="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Stratix</p>
+						<h1 class="mt-1 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">Team Workspace</h1>
+					</div>
 				</div>
-			</div>
-			<button class="new-ticket" type="button">+ Nouveau ticket</button>
-		</header>
+				<button
+					class="inline-flex items-center justify-center rounded-2xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-0.5 hover:bg-blue-700 active:translate-y-0"
+					type="button"
+					@click="toggle('createticketmodal')"
+				>
+					+ Nouveau ticket
+				</button>
+			</header>
 
-		<section class="stats-grid">
-			<article class="stat-card">
-				<p>Tickets ouverts</p>
-				<strong>24</strong>
-			</article>
-			<article class="stat-card">
-				<p>En revue</p>
-				<strong>8</strong>
-			</article>
-			<article class="stat-card">
-				<p>Bloques</p>
-				<strong>3</strong>
-			</article>
-			<article class="stat-card">
-				<p>Livres cette semaine</p>
-				<strong>17</strong>
-			</article>
-		</section>
+			<section
+				id="createticketmodal"
+				class="hidden overflow-hidden rounded-3xl border border-slate-200/80 bg-white/90 shadow-2xl shadow-slate-200/70 backdrop-blur"
+			>
+				<div class="relative overflow-hidden p-5 sm:p-6">
+					<div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.12),transparent_38%)]"></div>
+					<header class="relative z-10 mb-5 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+						<div>
+							<p class="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Creation rapide</p>
+							<h2 class="mt-1 text-2xl font-bold tracking-tight text-slate-900">Ajouter un nouveau ticket</h2>
+						</div>
+						<p class="max-w-md text-sm leading-6 text-slate-500">
+							Formulaire statique pour structurer un ticket avant integration.
+						</p>
+					</header>
 
-		<section class="board">
-			<article class="column">
-				<h2>A faire</h2>
-				<div class="ticket">
-					<h3>STR-102 Refonte page profil</h3>
-					<p>Mettre a jour les composants avatar et permissions.</p>
-				</div>
-				<div class="ticket">
-					<h3>STR-118 API commentaires</h3>
-					<p>Ajouter endpoint pour reactions et tri chronologique.</p>
-				</div>
-			</article>
+					<form class="relative z-10 grid gap-5" @submit.prevent="handleSubmit">
+						<label class="grid gap-2">
+							<span class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Titre du ticket</span>
+							<input
+								type="text"
+								name="title"
+								placeholder="Ex: Corriger le bug de login"
+								class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15"
+							/>
+						</label>
 
-			<article class="column">
-				<h2>En cours</h2>
-				<div class="ticket">
-					<h3>STR-099 Auth 2FA</h3>
-					<p>Activation OTP et ecran de verification.</p>
-				</div>
-				<div class="ticket">
-					<h3>STR-121 Dashboard mobile</h3>
-					<p>Optimiser les cartes KPI pour ecrans < 768px.</p>
-				</div>
-			</article>
+						<label class="grid gap-2">
+							<span class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Description</span>
+							<textarea
+								name="description"
+								rows="4"
+								placeholder="Decrire le besoin, le contexte et les criteres de validation"
+								class="min-h-32 w-full resize-y rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15"
+							></textarea>
+						</label>
 
-			<article class="column">
-				<h2>Termine</h2>
-				<div class="ticket done">
-					<h3>STR-087 Import CSV</h3>
-					<p>Validation schema et rapport d erreurs.</p>
+						<div class="grid gap-4 md:grid-cols-2">
+							<label class="grid gap-2">
+								<span class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Priorite</span>
+								<select
+									name="priority"
+									class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15"
+								>
+									<option value="">Choisir une priorite</option>
+									<option value="p1">P1 - Critique</option>
+									<option value="p2">P2 - Haute</option>
+									<option value="p3">P3 - Moyenne</option>
+									<option value="p4">P4 - Basse</option>
+								</select>
+							</label>
+
+							<label class="grid gap-2">
+								<span class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Statut</span>
+								<select
+									name="status"
+									class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15"
+								>
+									<option value="todo">A faire</option>
+									<option value="progress">En cours</option>
+									<option value="review">En revue</option>
+								</select>
+							</label>
+
+							<label class="grid gap-2">
+								<span class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Responsable</span>
+								<input
+									type="text"
+									name="assignee"
+									placeholder="Ex: Amine"
+									class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15"
+								/>
+							</label>
+
+							<label class="grid gap-2">
+								<span class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Date limite</span>
+								<input
+									type="date"
+									name="dueDate"
+									class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15"
+								/>
+							</label>
+						</div>
+
+						<div class="flex flex-col gap-3 border-t border-slate-200 pt-4 md:flex-row md:items-center md:justify-between">
+							<label class="inline-flex items-center gap-2 text-sm text-slate-600">
+								<input name="notifyTeam" type="checkbox" checked class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
+								<span>Notifier l'equipe</span>
+							</label>
+							<div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+								<button
+									class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+									type="button"
+									@click="toggle('createticketmodal')"
+								>
+									Annuler
+								</button>
+								<button
+									class="inline-flex items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-0.5 hover:bg-blue-700 active:translate-y-0"
+									type="submit"
+								>
+									Creer le ticket
+								</button>
+							</div>
+						</div>
+					</form>
 				</div>
-				<div class="ticket done">
-					<h3>STR-093 Filtre priorites</h3>
-					<p>Ajout du filtre P1/P2/P3 sur le backlog.</p>
-				</div>
-			</article>
-		</section>
+			</section>
+
+			<section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+				<article class="rounded-2xl border border-slate-200 bg-white/90 p-4 shadow-lg shadow-slate-200/60">
+					<p class="text-sm text-slate-500">Tickets ouverts</p>
+					<strong class="mt-2 block text-3xl font-bold text-slate-900">{{ count({ status: 'todo' } as Task) }}</strong>
+				</article>
+				<article class="rounded-2xl border border-slate-200 bg-white/90 p-4 shadow-lg shadow-slate-200/60">
+					<p class="text-sm text-slate-500">En cours</p>
+					<strong class="mt-2 block text-3xl font-bold text-slate-900">{{ count({ status: 'progress' } as Task) }}</strong>
+				</article>
+				<article class="rounded-2xl border border-slate-200 bg-white/90 p-4 shadow-lg shadow-slate-200/60">
+					<p class="text-sm text-slate-500">En revue</p>
+					<strong class="mt-2 block text-3xl font-bold text-slate-900">{{ count({ status: 'review' } as Task) }}</strong>
+				</article>
+			</section>
+
+			<section class="grid gap-4 lg:grid-cols-3">
+				<article class="grid gap-3 rounded-3xl border border-slate-200 bg-white/90 p-4 shadow-lg shadow-slate-200/60">
+					<h2 class="text-base font-bold text-slate-900">A faire</h2>
+					<div v-for="task in tasks.filter(t => t.status === 'todo')" :key="task.title" class="rounded-2xl border border-slate-200 border-l-4 border-l-blue-600 bg-slate-50 p-4">
+						<h3 class="text-sm font-semibold text-slate-900">{{ task.title }}</h3>
+						<p class="mt-2 text-sm leading-6 text-slate-500">{{ task.description }}</p>
+					</div>
+                    <div v-if="!tasks.some(t => t.status === 'todo')" class="flex h-full items-center justify-center rounded-2xl border border-slate-200 border-dashed bg-slate-50 p-4">
+                        <p class="text-sm italic text-slate-400">Aucun ticket a faire</p>
+                    </div>
+				</article>
+
+                <article  class="grid gap-3 rounded-3xl border border-slate-200 bg-white/90 p-4 shadow-lg shadow-slate-200/60">
+					<h2 class="text-base font-bold text-slate-900">En cours</h2>
+					<div v-for="task in tasks.filter(t => t.status === 'progress')" :key="task.title" class="rounded-2xl border border-slate-200 border-l-4 border-l-emerald-500 bg-slate-50 p-4">
+						<h3 class="text-sm font-semibold text-slate-900">{{ task.title }}</h3>
+						<p class="mt-2 text-sm leading-6 text-slate-500">{{ task.description }}</p>
+					</div>
+                    <div v-if="!tasks.some(t => t.status === 'progress')" class="flex h-full items-center justify-center rounded-2xl border border-slate-200 border-dashed bg-slate-50 p-4">
+                        <p class="text-sm italic text-slate-400">Aucun ticket en cours</p>
+                    </div>
+				</article>
+
+				<article  class="grid gap-3 rounded-3xl border border-slate-200 bg-white/90 p-4 shadow-lg shadow-slate-200/60">
+					<h2 class="text-base font-bold text-slate-900">Termine</h2>
+					<div v-for="task in tasks.filter(t => t.status === 'review')" :key="task.title" class="rounded-2xl border border-slate-200 border-l-4 border-l-emerald-500 bg-slate-50 p-4">
+						<h3 class="text-sm font-semibold text-slate-900">{{ task.title }}</h3>
+						<p class="mt-2 text-sm leading-6 text-slate-500">{{ task.description }}</p>
+					</div>
+                    <div v-if="!tasks.some(t => t.status === 'review')" class="flex h-full items-center justify-center rounded-2xl border border-slate-200 border-dashed bg-slate-50 p-4">
+                        <p class="text-sm italic text-slate-400">Aucun ticket termine</p>
+                    </div>
+				</article>
+			</section>
+		</div>
 	</main>
 </template>
-
-<style scoped>
-.home-page {
-	--bg: #edf3ff;
-	--panel: #ffffff;
-	--text: #1a2b4d;
-	--muted: #5f7193;
-	--line: #d7e2f6;
-	--accent: #0059d6;
-	--accent-soft: #eaf1ff;
-
-	min-height: 100vh;
-	padding: clamp(1rem, 2vw, 2rem);
-	color: var(--text);
-	background:
-		radial-gradient(circle at 15% 15%, #dae8ff 0, transparent 40%),
-		radial-gradient(circle at 90% 90%, #d5f2ff 0, transparent 38%),
-		linear-gradient(135deg, #f2f7ff 0%, #fbfdff 100%);
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+<script lang="ts">
+interface Task {
+	title: string;
+	description: string;
+	priority: string;
+	status: string;
+	assignee: string;
+	dueDate: string;
+	notifyTeam: boolean;
 }
 
-.topbar {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 1rem;
-	margin-bottom: 1rem;
-}
+export default {
+	name: 'HomeView',
 
-.brand {
-	display: flex;
-	align-items: center;
-	gap: 0.8rem;
-}
+	data() {
+		return {
+			tasks: [] as Task[],
+			form: {
+				title: '',
+				description: '',
+				priority: '',
+				status: 'todo',
+				assignee: '',
+				dueDate: '',
+				notifyTeam: true,
+			} as Task,
+		};
+	},
 
-.brand-mark {
-	width: 2.3rem;
-	height: 2.3rem;
-	border-radius: 0.7rem;
-	display: grid;
-	place-items: center;
-	color: #fff;
-	font-weight: 800;
-	background: linear-gradient(140deg, var(--accent), #0e85ff);
-}
+	methods: {
+		toggle(id: string) {
+			const el = document.getElementById(id);
+			if (el) {
+				el.classList.toggle('hidden');
+			}
+		},
+		handleSubmit(event: Event) {
+			const formEl = event.target as HTMLFormElement | null;
+			if (!formEl) return;
 
-.kicker {
-	margin: 0;
-	font-size: 0.78rem;
-	color: var(--muted);
-	text-transform: uppercase;
-	letter-spacing: 0.06em;
-}
+			const values = new FormData(formEl);
 
-h1 {
-	margin: 0.1rem 0 0;
-	font-size: clamp(1.1rem, 2vw, 1.5rem);
-}
+			this.form.title = String(values.get('title') ?? '');
+			this.form.description = String(values.get('description') ?? '');
+			this.form.priority = String(values.get('priority') ?? '');
+			this.form.status = String(values.get('status') ?? 'todo');
+			this.form.assignee = String(values.get('assignee') ?? '');
+			this.form.dueDate = String(values.get('dueDate') ?? '');
+			this.form.notifyTeam = values.get('notifyTeam') !== null;
 
-.new-ticket {
-	border: none;
-	border-radius: 0.7rem;
-	background: var(--accent);
-	color: #fff;
-	padding: 0.65rem 0.95rem;
-	font-weight: 700;
-	cursor: pointer;
-}
-
-.stats-grid {
-	display: grid;
-	grid-template-columns: repeat(4, minmax(0, 1fr));
-	gap: 0.8rem;
-	margin-bottom: 1rem;
-}
-
-.stat-card {
-	background: var(--panel);
-	border: 1px solid var(--line);
-	border-radius: 0.9rem;
-	padding: 0.9rem;
-}
-
-.stat-card p {
-	margin: 0;
-	color: var(--muted);
-	font-size: 0.88rem;
-}
-
-.stat-card strong {
-	display: block;
-	margin-top: 0.35rem;
-	font-size: 1.5rem;
-}
-
-.board {
-	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-	gap: 0.8rem;
-}
-
-.column {
-	background: color-mix(in srgb, var(--panel) 90%, var(--accent-soft));
-	border: 1px solid var(--line);
-	border-radius: 1rem;
-	padding: 0.8rem;
-	display: grid;
-	gap: 0.7rem;
-	align-content: start;
-}
-
-h2 {
-	margin: 0;
-	font-size: 1rem;
-}
-
-.ticket {
-	background: #fff;
-	border: 1px solid var(--line);
-	border-left: 4px solid var(--accent);
-	border-radius: 0.7rem;
-	padding: 0.7rem;
-}
-
-.ticket h3 {
-	margin: 0;
-	font-size: 0.92rem;
-}
-
-.ticket p {
-	margin: 0.4rem 0 0;
-	color: var(--muted);
-	font-size: 0.84rem;
-}
-
-.ticket.done {
-	border-left-color: #2f9e44;
-}
-
-@media (max-width: 980px) {
-	.stats-grid {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
+			this.tasks.push({ ...this.form });
+			formEl.reset();
+			this.toggle('createticketmodal');
+		},
+		count(task: Task) {
+			return this.tasks.filter((item) => item.status === task.status).length;
+		}
 	}
-
-	.board {
-		grid-template-columns: 1fr;
-	}
-}
-
-@media (max-width: 560px) {
-	.topbar {
-		flex-direction: column;
-		align-items: flex-start;
-	}
-}
-</style>
+};
+</script>
